@@ -1,0 +1,17 @@
+# Build artifacts
+obj/
+parser
+
+# Generated files
+*.tab.c
+*.tab.h
+*.yy.c
+
+# Editor files
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db 
