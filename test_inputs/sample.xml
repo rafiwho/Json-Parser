@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<person id="123">
+    <name>John Doe</name>
+    <age>30</age>
+    <address>
+        <street>123 Main St</street>
+        <city>New York</city>
+        <zip>10001</zip>
+    </address>
+    <hobbies>
+        <hobby>reading</hobby>
+        <hobby>gaming</hobby>
+        <hobby>coding</hobby>
+    </hobbies>
+    <education>
+        <degree>Bachelor's</degree>
+        <major>Computer Science</major>
+        <graduation_year>2020</graduation_year>
+    </education>
+</person> 

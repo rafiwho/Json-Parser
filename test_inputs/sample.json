@@ -1,0 +1,16 @@
+{
+    "name": "John Doe",
+    "age": 30,
+    "is_student": false,
+    "address": {
+        "street": "123 Main St",
+        "city": "New York",
+        "zip": 10001
+    },
+    "hobbies": ["reading", "gaming", "coding"],
+    "education": {
+        "degree": "Bachelor's",
+        "major": "Computer Science",
+        "graduation_year": 2020
+    }
+} 
