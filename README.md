@@ -1,19 +1,16 @@
-# Multi-Format Parser
+# JSON Parser
 
-A flexible and extensible parser that supports multiple data formats including JSON, XML, SQL, CSV, and YAML.
+A flexible and extensible JSON parser that provides human-readable output of JSON data structures.
 
 ## Features
 
-- **Multi-Format Support**: Parse files in various formats:
-  - JSON
-  - XML
-  - SQL
-  - CSV
-  - YAML
-
-- **Flexible Architecture**: Easily extensible to support additional formats
-- **Standardized Interface**: Consistent parsing API across all formats
-- **Error Handling**: Robust error reporting for each parser
+- **JSON Parsing**: Parse and validate JSON files
+- **Human-Readable Output**: Produces formatted output with:
+  - Type information (String, Number, Boolean, etc.)
+  - Clear structure visualization
+  - Proper indentation for nested objects/arrays
+  - Array element bullet points
+- **Error Handling**: Robust error reporting for invalid JSON
 
 ## Requirements
 
@@ -26,8 +23,8 @@ A flexible and extensible parser that supports multiple data formats including J
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/Multi-Format-Parser.git
-   cd Multi-Format-Parser
+   git clone https://github.com/yourusername/JSON-Parser.git
+   cd JSON-Parser
    ```
 
 2. Build the project:
@@ -39,55 +36,65 @@ A flexible and extensible parser that supports multiple data formats including J
 ## Usage
 
 ### Basic Usage
-Run the parser with a file of any supported format:
+Run the parser with a JSON file:
 ```bash
-./parser <filename>
+./parser <filename.json>
 ```
 
 ### Running with Sample Files
-The project includes sample files for testing in the `test_inputs` directory:
+The project includes a sample JSON file for testing in the `test_inputs` directory:
 
 ```bash
-# Parse YAML file
-./parser test_inputs/sample.yaml
-
-# Parse SQL file
-./parser test_inputs/sample.sql
-
 # Parse JSON file
 ./parser test_inputs/sample.json
+```
 
-# Parse XML file
-./parser test_inputs/sample.xml
+### Example Output
+For a JSON file like:
+```json
+{
+    "name": "John Doe",
+    "age": 30,
+    "is_student": false,
+    "address": {
+        "street": "123 Main St",
+        "city": "New York",
+        "zip": 10001
+    }
+}
+```
 
-# Parse CSV file
-./parser test_inputs/sample.csv
+The parser will produce:
+```
+Object:
+  name -> String: John Doe
+  age -> Number: 30
+  is_student -> Boolean: false
+  address -> Object:
+    street -> String: 123 Main St
+    city -> String: New York
+    zip -> Number: 10001
 ```
 
 ### Error Handling
 - If no filename is provided, usage instructions will be displayed
-- If the file format is not supported, an error message will be shown
+- If the file is not a JSON file, an error message will be shown
 - If the file cannot be opened, an error message will be shown
-
-### Supported File Extensions
-- `.json` - JSON files
-- `.xml` - XML files
-- `.sql` - SQL files
-- `.csv` - CSV files
-- `.yaml` or `.yml` - YAML files
+- If the JSON is invalid, a parsing error will be shown
 
 ## Project Structure
 
 ```
-Multi-Format-Parser/
+JSON-Parser/
 ├── include/           # Header files
 ├── src/              # Source files
-│   ├── json/         # JSON parser
-│   ├── xml/          # XML parser
-│   ├── sql/          # SQL parser
-│   ├── csv/          # CSV parser
-│   └── yaml/         # YAML parser
-├── test_inputs/      # Sample input files
+│   ├── json/         # JSON parser implementation
+│   │   ├── json.l    # Lexer definition
+│   │   ├── json.y    # Parser definition
+│   │   └── json_parser.c  # Parser implementation
+│   ├── parser.c      # Main parser logic
+│   └── main.c        # Entry point
+├── test_inputs/      # Sample JSON files
 ├── obj/              # Object files (generated)
 ├── Makefile          # Build configuration
 └── README.md         # This file
@@ -107,17 +114,6 @@ To clean and rebuild:
 make clean   # Remove all generated files
 make        # Rebuild the project
 ```
-
-## Extending the Parser
-
-To add support for a new format:
-
-1. Create a new directory in `src/` for your parser
-2. Implement the lexer (`.l`) and parser (`.y`) files
-3. Create a header file in `include/`
-4. Update `parser.h` to include the new format
-5. Update `parser.c` to handle the new format
-6. Update the Makefile with build rules for the new parser
 
 ## License
 
