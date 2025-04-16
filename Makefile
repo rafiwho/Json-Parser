@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -I./include -I./src/json -I./src/xml -I./src/sql -I./src/csv -I./src/yaml -Wall -Wextra
+CFLAGS = -I./include -I./src/json -Wall -Wextra
 LDFLAGS = -lfl
 
 SRC_DIR = src
@@ -7,17 +7,18 @@ OBJ_DIR = obj
 INCLUDE_DIR = include
 
 # Source files
-SRCS = $(SRC_DIR)/main.c
+SRCS = $(SRC_DIR)/main.c $(SRC_DIR)/parser.c \
+       $(SRC_DIR)/json/json_parser.c
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 # Parser files
-PARSER_SRCS = $(SRC_DIR)/json/json.y $(SRC_DIR)/xml/xml.y $(SRC_DIR)/sql/sql.y $(SRC_DIR)/csv/csv.y $(SRC_DIR)/yaml/yaml.y
+PARSER_SRCS = $(SRC_DIR)/json/json.y
 PARSER_C_SRCS = $(PARSER_SRCS:.y=.tab.c)
 PARSER_H_SRCS = $(PARSER_SRCS:.y=.tab.h)
 PARSER_OBJS = $(PARSER_SRCS:$(SRC_DIR)/%.y=$(OBJ_DIR)/%.tab.o)
 
 # Lexer files
-LEXER_SRCS = $(SRC_DIR)/json/json.l $(SRC_DIR)/xml/xml.l $(SRC_DIR)/sql/sql.l $(SRC_DIR)/csv/csv.l $(SRC_DIR)/yaml/yaml.l
+LEXER_SRCS = $(SRC_DIR)/json/json.l
 LEXER_C_SRCS = $(LEXER_SRCS:.l=.yy.c)
 LEXER_OBJS = $(LEXER_SRCS:$(SRC_DIR)/%.l=$(OBJ_DIR)/%.yy.o)
 
@@ -25,14 +26,14 @@ LEXER_OBJS = $(LEXER_SRCS:$(SRC_DIR)/%.l=$(OBJ_DIR)/%.yy.o)
 all: dirs parser
 
 dirs:
-	mkdir -p $(OBJ_DIR)/json $(OBJ_DIR)/xml $(OBJ_DIR)/sql $(OBJ_DIR)/csv $(OBJ_DIR)/yaml
+	mkdir -p $(OBJ_DIR)/json
 
 # Build main parser
 parser: $(OBJS) $(PARSER_OBJS) $(LEXER_OBJS)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 # Build object files
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(PARSER_H_SRCS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Build parser object files

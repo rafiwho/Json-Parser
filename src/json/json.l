@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "json.h"
+#include "json.tab.h"
+
+FILE* json_in;
 
 #define YY_NO_INPUT
 #define YY_NO_UNPUT
@@ -42,8 +45,4 @@
 
 %%
 
-int json_wrap() { return 1; }
-
-void json_error(const char* msg) {
-    fprintf(stderr, "JSON Lexer Error: %s\n", msg);
-} 
+int json_wrap() { return 1; } 

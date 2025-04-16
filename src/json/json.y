@@ -13,9 +13,13 @@ extern int json_parse(void);
 static int indent_level = 0;
 static void print_indent(void) {
     for (int i = 0; i < indent_level; i++) {
-        printf("    ");
+        printf("  ");
     }
 }
+
+FILE* yyin;
+int yylex(void);
+void yyerror(const char* s);
 %}
 
 %define api.prefix {json_}
@@ -37,59 +41,53 @@ json: value { printf("\n"); }
 
 value: object
      | array
-     | STRING    { printf("\"%s\"", $1); free($1); }
-     | NUMBER    { printf("%d", $1); }
-     | TRUE      { printf("true"); }
-     | FALSE     { printf("false"); }
+     | STRING    { printf("String: %s", $1); free($1); }
+     | NUMBER    { printf("Number: %d", $1); }
+     | TRUE      { printf("Boolean: true"); }
+     | FALSE     { printf("Boolean: false"); }
      | JSON_NULL { printf("null"); }
      ;
 
 object: LBRACE { 
-    printf("{\n");
+    printf("Object:\n");
     indent_level++;
-    print_indent();
 }
     members RBRACE {
-    printf("\n");
     indent_level--;
-    print_indent();
-    printf("}");
 }
+    | LBRACE RBRACE { printf("Empty Object"); }
     ;
 
 members: pair
        | members COMMA {
-    printf(",\n");
-    print_indent();
+    printf("\n");
 }
     pair
     ;
 
-pair: STRING COLON value {
-    printf("\"%s\": ", $1);
+pair: STRING COLON {
+    print_indent();
+    printf("%s -> ", $1);
     free($1);
-}
+} value
     ;
 
-array: LBRACKET {
-    printf("[\n");
+array: LBRACKET { 
+    printf("Array:\n");
     indent_level++;
-    print_indent();
 }
     elements RBRACKET {
-    printf("\n");
     indent_level--;
-    print_indent();
-    printf("]");
 }
+    | LBRACKET RBRACKET { printf("Empty Array"); }
     ;
 
-elements: value
+elements: { print_indent(); printf("- "); } value
         | elements COMMA {
-    printf(",\n");
+    printf("\n");
     print_indent();
-}
-    value
+    printf("- ");
+} value
     ;
 
 %%

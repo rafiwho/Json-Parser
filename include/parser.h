@@ -4,14 +4,10 @@
 // File format enumeration
 typedef enum {
     FORMAT_UNKNOWN,
-    FORMAT_JSON,
-    FORMAT_XML,
-    FORMAT_SQL,
-    FORMAT_CSV,
-    FORMAT_YAML
+    FORMAT_JSON
 } FileFormat;
 
 // Main parsing function
 int parse_file(const char* filename);
 
-#endif // PARSER_H 
+#endif /* PARSER_H */ 
